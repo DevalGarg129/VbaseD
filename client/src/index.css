@@ -1,0 +1,7 @@
+*{margin:0;padding:0;box-sizing:border-box}
+html,body,#root{height:100%;min-height:100vh}
+body{font-family:'Inter',sans-serif;background:#0A0A14;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#12122A}
+::-webkit-scrollbar-thumb{background:rgba(108,99,255,0.35);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(108,99,255,0.6)}
