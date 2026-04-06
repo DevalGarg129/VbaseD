@@ -48,7 +48,8 @@ export default function Register() {
       login(res.data.token, res.data.user);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.msg || "Registration failed");
+      const serverMsg = err.response?.data?.msg || err.response?.data?.message;
+      setError(serverMsg || "Registration failed");
     } finally {
       setLoading(false);
     }
