@@ -11,7 +11,8 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (!user) return;
-    const s = io("http://localhost:5000", {
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.replace(/\/api\/?$/, "")) || "http://localhost:5000";
+    const s = io(socketUrl, {
       query: { userId: user.id },
       transports: ["websocket"],
       reconnection: true,
