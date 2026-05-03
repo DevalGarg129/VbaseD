@@ -11,14 +11,35 @@ const notFound = require("./middleware/notFound");
 const app = express();
 const server = http.createServer(app);
 
+// Configure allowed origins via env or fallback to local dev origins
+const allowedOrigins = (process.env.ALLOWED_ORIGINS && process.env.ALLOWED_ORIGINS.split(",")) || [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://vbased.vercel.app",
+];
+
 const io = new Server(server, {
-  cors: { origin: ["http://localhost:3000", "http://localhost:5173"], credentials: true },
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      return allowedOrigins.includes(origin) ? callback(null, true) : callback(new Error("CORS policy: origin not allowed"));
+    },
+    credentials: true,
+  },
 });
 
 connectDB();
 
 app.use(express.json());
-app.use(cors({ origin: ["http://localhost:3000", "http://localhost:5173"], credentials: true }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      return allowedOrigins.includes(origin) ? callback(null, true) : callback(new Error("CORS policy: origin not allowed"));
+    },
+    credentials: true,
+  })
+);
 
 // Make io accessible in routes
 app.set("io", io);
